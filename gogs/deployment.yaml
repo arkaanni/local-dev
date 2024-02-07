@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gogs
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: gogs
+  template:
+    metadata:
+      labels:
+        app: gogs
+    spec:
+      containers:
+        - image: gogs/gogs:0.13
+          name: gogs
+          ports:
+            - containerPort: 22
+              name: ssh
+            - containerPort: 3000
+              name: http
+          env:
+            - name: SOCAT_LINK
+              value: "false"
+          volumeMounts:
+            - name: gogs-persistent-storage
+              mountPath: data
+      volumes:
+        - name: gogs-persistent-storage
+          persistentVolumeClaim:
+            claimName: gogs-pv-claim
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gogs-service
+  namespace: default
+spec:
+  selector:
+    app: gogs
+  type: NodePort
+  ports:
+  - name: ssh
+    port: 22
+    nodePort: 31022
+  - name: http
+    port: 3000
+    nodePort: 31300

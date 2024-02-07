@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql
-  namespace: schl
-data:
-  db_host: "mysql.default"
-  db_port: "3306"
-

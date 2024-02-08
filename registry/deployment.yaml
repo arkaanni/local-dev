@@ -18,6 +18,13 @@ spec:
           ports:
             - containerPort: 5000
               name: registry
+          volumeMounts:
+            - name: registry-data
+              mountPath: "/var/lib/registry"
+      volumes:
+        - name: registry-data
+          persistentVolumeClaim:
+            claimName: registry-pv-claim
 
 ---
 

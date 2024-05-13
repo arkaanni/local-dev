@@ -2,6 +2,8 @@ FROM ghcr.io/graalvm/graalvm-community:17.0.9
 
 WORKDIR /
 
+RUN microdnf install git
+
 RUN mkdir "/var/jenkins_home"
 RUN curl -L -O "https://get.jenkins.io/war-stable/2.440.3/jenkins.war"
 RUN ls /

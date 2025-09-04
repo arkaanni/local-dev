@@ -13,7 +13,7 @@ spec:
         app: registry
     spec:
       containers:
-        - image: registry:2.8.3
+        - image: registry:3
           name: registry
           ports:
             - containerPort: 5000
@@ -21,6 +21,9 @@ spec:
           volumeMounts:
             - name: registry-data
               mountPath: "/var/lib/registry"
+          env:
+          - name: OTEL_TRACES_EXPORTER
+            value: none
       volumes:
         - name: registry-data
           persistentVolumeClaim:

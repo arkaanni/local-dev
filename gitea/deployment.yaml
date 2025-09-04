@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitea
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      containers:
+      - name: git
+        image: docker.gitea.com/gitea:1.24.3
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        volumeMounts:
+          - mountPath: /data
+            name: gitea-persistent-storage
+      restartPolicy: Always
+      volumes:
+        - name: gitea-persistent-storage
+          persistentVolumeClaim:
+            claimName: gitea-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea-service
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: gitea

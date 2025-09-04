@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea-runner
+spec:
+  selector:
+    matchLabels:
+      app: gitea-runner
+  template:
+    metadata:
+      labels:
+        app: gitea-runner
+    spec:
+      runtimeClassName: sysbox
+      containers:
+        - name: gitea-runner
+          image: registry-service:5000/gitea-runner:latest
+          securityContext:
+            privileged: false
+          env:
+          - name: GITEA_HOST
+            value: "http://gitea-service:3000"
+          - name: GITEA_TOKEN
+            value: ""
+          - name: GITEA_RUNNER_LABELS
+            value: ubuntu:host
+          volumeMounts:
+          - name: runner-data
+            mountPath: /data
+      volumes:
+        - name: runner-data
+          hostPath:
+            path: "/mnt/data/gitea/runner"
+        - name: maven-repo
+          hostPath:
+            path: "/mnt/data/maven"
+        - name: gradle-repo
+          hostPath:
+            path: "/mnt/data/gradle"

@@ -12,17 +12,17 @@ COPY config.yaml /config.yaml
 
 RUN chmod +x ./run.sh
 
-#RUN usermod --add-subuids 1-65535 --add-subgids 1-65535 root
-#RUN podman system service
+RUN usermod --add-subuids 1-65535 --add-subgids 1-65535 root
+RUN podman system service
 
-#COPY start-runner.service /etc/systemd/system/start-runner.service
+COPY start-runner.service /etc/systemd/system/start-runner.service
 COPY start-runner.service /usr/lib/systemd/system/start-runner.service
 
 #RUN systemctl enable podman.service
 #RUN systemctl enable podman.socket
 #RUN systemctl enable start-runner.service
 
-#RUN ln -s /usr/lib/systemd/system/podman.service /etc/systemd/system/multi-user.target.wants/podman.service
+RUN ln -s /usr/lib/systemd/system/podman.service /etc/systemd/system/multi-user.target.wants/podman.service
 RUN ln -s /usr/lib/systemd/system/start-runner.service /etc/systemd/system/multi-user.target.wants/start-runner.service
 
 ENV DOCKER_HOST=unix:///run/podman/podman.sock

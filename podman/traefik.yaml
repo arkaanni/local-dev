@@ -6,7 +6,7 @@ metadata:
     app: traefik
 spec:
   containers:
-  - name: platform_git
+  - name: platform_traefik
     image: docker.io/library/traefik:3.5.0
     securityContext:
       privileged: true
@@ -14,7 +14,7 @@ spec:
       - "--accesslog=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
-      - "--entrypoints.http.address=:8000"
+      - "--entrypoints.web.address=:80"
       - "--entrypoints.mysql.address=:3306"
       - "--log.level=info"
       - "--providers.docker=true"

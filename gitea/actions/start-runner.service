@@ -1,0 +1,11 @@
+[Unit]
+Description=Gitea Runner
+After=multi-user.target
+
+[Service]
+ExecStart=/run.sh
+Type=oneshot
+PassEnvironment=GITEA_HOST GITEA_TOKEN GITEA_RUNNER_LABELS
+
+[Install]
+WantedBy=multi-user.target

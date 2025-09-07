@@ -1,0 +1,4 @@
+git.dev.local {
+	reverse_proxy localhost:3000
+	tls /home/vm1/cert/fullchain.pem /home/vm1/cert/cert-key.pem
+}

@@ -1,13 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql-service
 spec:
   ports:
-  - port: 3306
+  - name: http
+    port: 3306
+    targetPort: 3306
   selector:
     app: mysql
-  clusterIP: None
+  #clusterIP: None
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,6 +26,11 @@ spec:
     metadata:
       labels:
         app: mysql
+        #traefik.enable: "true"
+        #traefik.tcp.routers.mysql-service.entrypoints: "mysql"
+        #traefik.tcp.routers.mysql-service.rule: HostSNI('db.dev.local')
+        #traefik.tcp.services.mysql-service.loadbalancer.server.port: "3306"
+        #traefik.tcp.routers.mysql-service.tls: "true"
     spec:
       containers:
       - image: mysql:8.3.0
